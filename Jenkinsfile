@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  // Pinned, not `agent any`. An unpinned agent can land on the macOS
+  // (saturn) or Windows (amalthea) node, neither of which has a docker
+  // CLI, and every docker stage below then dies with "docker: not found".
+  // Only europa and callisto carry `linux-build`. (CI hardening 2026-09-13)
+  agent { label 'linux-build' }
 
   environment {
     NEXUS_URL = 'https://nexus.softsurve.com'
